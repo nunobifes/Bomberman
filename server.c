@@ -10,72 +10,8 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
-void allUsers(int fich){
-    
-    off_t ret;
-    ret = lseek(fich, 0, SEEK_END);
-    char *content = mmap(NULL, ret, PROT_READ | PROT_WRITE, MAP_PRIVATE, fich, 0);
-    
-    printf("%s", content);
-    
-    }
-    
-    
-int verificaUser(char *user, int buffer){
-
-    FILE *fo = fdopen(buffer, "r");
-    char userC[15], passC[15], line[50];
-    int i;
-    while (1) {
-        if(fgets(line,150, fo) == NULL)
-            break;       
-        i++;
-        //printf("%3d: %s", i, line);
-        sscanf(line, "%s %s\n", userC, passC);
-        //printf("%d %s\n", i, userC);
-        if(strcmp(userC, user) == 0){
-            rewind(fo);
-            return 1;
-        }
-    }
-    return 0;
-}
-
-char procuraUser(char *user, int buffer){
-    
-    FILE *fo = fdopen(buffer, "r");
-    char userC[15], passC[15], line[50];
-    int i;
-    char ret[50];
-    while (1) {
-        if(fgets(line,150, fo) == NULL)
-            break;       
-        i++;
-        //printf("%3d: %s", i, line);
-        sscanf(line, "%s %s\n", userC, passC);
-        //printf("%d %s\n", i, userC);
-        if(strcmp(userC, user) == 0){
-            rewind(fo);
-            *ret = printf("O Utilizador: %s tem a password: %s.\n", userC, passC);
-            return *ret;
-        }
-    }
-}
-
-void addUSer(char *user, char *pass, int fich){
-
-    char userPass[100];
-    sprintf(userPass, "%s %s\n", user, pass);
-        
-    off_t ret;
-    ret = lseek(fich, 0, SEEK_END);
-    
-    if(ret != (off_t) -1)
-        write(fich, userPass, strlen(userPass));
-    }
-
 int abreFich(){
-
+    
     int fo;
     // Abrir ficheiro users para leitura e escrita e verifica se ele existe
     fo = open("users.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXO | S_IRWXG);
@@ -85,6 +21,79 @@ int abreFich(){
     }
     return fo;
 }
+
+
+
+void allUsers(){
+    
+    int fich = abreFich();
+    off_t ret;
+    ret = lseek(fich, 0, SEEK_END);
+    char *content = mmap(NULL, ret, PROT_READ | PROT_WRITE, MAP_PRIVATE, fich, 0);
+    
+    printf("%s", content);
+    close(fich);    
+}
+    
+    
+int verificaUser(char *user){
+
+    int fich = abreFich();
+    FILE *fo = fdopen(fich, "r");
+    char userC[15], passC[15], line[50];
+    int i;
+    while (1) {
+        if(fgets(line,150, fo) == NULL)
+            break;       
+        i++;
+        sscanf(line, "%s %s\n", userC, passC);
+        if(strcmp(userC, user) == 0){
+            rewind(fo);
+            close(fich);
+            return 1;
+        }
+    }
+    close(fich);
+    return 0;
+}
+
+char procuraUser(char *user){
+    int fich = abreFich();
+    FILE *fo = fdopen(fich, "r");
+    char userC[15], passC[15], line[50];
+    int i;
+    char ret[50];
+    while (1) {
+        if(fgets(line,150, fo) == NULL)
+            break;       
+        i++;
+        sscanf(line, "%s %s\n", userC, passC);
+        if(strcmp(userC, user) == 0){
+            rewind(fo);
+            close(fich);
+            *ret = printf("O Utilizador: %s tem a password: %s.\n", userC, passC);
+            return *ret;
+        }
+    }
+    close(fich);
+}
+
+void addUSer(char *user, char *pass){
+
+    int fich = abreFich();
+    char userPass[100];
+    sprintf(userPass, "%s %s\n", user, pass);
+        
+    off_t ret;
+    ret = lseek(fich, 0, SEEK_END);
+    
+    if(ret != (off_t) -1)
+        write(fich, userPass, strlen(userPass));
+    
+    close(fich);
+}
+
+
 
 
 typedef struct player{
@@ -138,7 +147,6 @@ int main(){
 
     system("clear");
     char comando[30], username[15], password[15];
-    int buffer = abreFich();
     
     while(1) {
         
@@ -153,30 +161,28 @@ int main(){
             if(strlen(username) < 1 || strlen(password) < 1){
                 printf("Erro de sintaxe, porfavor escreva 'add USERNAME PASSWORD'!\n");
             }else{
-                if(verificaUser(username, buffer) == 1){
+                if(verificaUser(username) == 1){
                     printf("Erro username já está a ser utilizado, porfavor escolhe outro!\n");
                 }else{        
-                    addUSer(username, password, buffer); //verificaUser(username, fo);
+                    addUSer(username, password); //verificaUser(username, fo);
                 }
             }
         // sai do servidor                
         } else if(strncmp(comando, "quit", strlen("quit")) == 0){
-            close(buffer);
             exit(0);
         // apago o ecrã
         } else if(strncmp(comando, "clear", strlen("clear")) == 0){
             system("clear");
         // mostra todos os jogadores registados e passwords(TODO mostrar só os nomes de utilizador)
         } else if(strncmp(comando, "users", strlen("users")) == 0){
-            allUsers(buffer);
+            allUsers();
         // mostra jogador passado por argumento
         } else if(strncmp(comando, "user", strlen("user")) == 0){
             if(sscanf(comando, "user %14[^\n]", username) != EOF)
-                procuraUser(username, buffer);
+                procuraUser(username);
                 //printf("Função ainda não implementada!\n");
         }
 
     }       
-    close(buffer);
     return 0;
 }
