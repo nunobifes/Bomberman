@@ -10,6 +10,35 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
+//--------------------------------------------------------------------------ESTRUTURAS-------------------------------------------------------------------------
+
+typedef struct player{
+    
+        int vidas; // 3 vidas base
+        int pontuacao;
+        int bombas;
+        int mbomba;
+        int items; 
+        int x, y;
+        
+    }player;
+    
+    typedef struct npc{
+    
+        int hit;
+        int drop;
+        int x, y;
+        
+    
+    }npc;
+    
+    typedef struct tipoParede{
+        int tipo_parede;  //0 -> vazio, 1 -> parede não destrutivel, 2 -> parede destrutivel -> 3 vazio c/ drop
+        int explosao;
+    }TParede;
+    
+//--------------------------------------------------------------------------FUNÇÕES----------------------------------------------------------------------------
+
 int abreFich(){
     
     int fo;
@@ -93,33 +122,7 @@ void addUSer(char *user, char *pass){
     close(fich);
 }
 
-
-
-
-typedef struct player{
-
-    int vidas; // 3 vidas base
-    int pontuacao;
-    int bombas;
-    int mbomba;
-    int items; 
-    int x, y;
-    
-}player;
-
-typedef struct npc{
-
-    int hit;
-    int drop;
-    int x, y;
-    
-
-}npc;
-
-typedef struct tipoParede{
-    int tipo_parede;  //0 -> vazio, 1 -> parede não destrutivel, 2 -> parede destrutivel -> 3 vazio c/ drop
-    int explosao;
-}TParede;
+//--------------------------------------------------------------------------MAIN-------------------------------------------------------------------------------
 
 int main(){
 
