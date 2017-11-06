@@ -25,19 +25,17 @@ int main(){
     // a shell
 
     system("clear");
-    char comando[30];
-    char username[15], password[15];
+    char comando[50];
+    char username[15], password[15], cmd[15], argum[30];
     
     while(1) {
         
         printf("bomberman@server $ ");
-        scanf(" %29[^\n]", comando);
-        
-        
+        scanf(" %49[^\n]", comando);
+        sscanf(comando, "%14s %29[^\n]", cmd, argum);
         // adiciona jogador novo
-        if(strncmp(comando, "add ", strlen("add ")) == 0) {
-            //printf("%ld %ld %ld\n", sizeof("add"), strlen("add"), strlen(comando));
-            sscanf(comando, "add %14[^ ] %14[^\n]", username, password);
+        if(strcmp(cmd, "add") == 0) {
+            sscanf(argum, "%14[^ ] %14[^\n]", username, password);
             if(strlen(username) < 1 || strlen(password) < 1){
                 printf("Erro de sintaxe, porfavor escreva 'add USERNAME PASSWORD'!\n");
                 *username = 0;
@@ -55,39 +53,39 @@ int main(){
             }                
         }
         // sai do servidor
-        if(strncmp(comando, "quit", strlen("quit")) == 0){
+        if(strcmp(cmd, "quit") == 0){
             exit(0);
         }
         // apago o ecrã
-        if(strncmp(comando, "clear", strlen("clear")) == 0){
+        if(strcmp(cmd, "clear") == 0){
             system("clear");
         }
         // mostra todos os jogadores registados
-        if(strncmp(comando, "users", strlen("users")) == 0){
+        if(strcmp(cmd, "users") == 0){
             allUsers();
         }
         // mostra jogador passado por argumento
-        if(strncmp(comando, "user ", strlen("user ")) == 0){
-            if(sscanf(comando, "user %14[^\n]", username) != EOF)
+        if(strcmp(cmd, "user") == 0){
+            if(sscanf(argum, "%29[^\n]", username) != EOF)
                 procuraUser(username);
                 *username = 0;
         }
-        if(strncmp(comando, "kick", strlen("kick")) == 0){
-            if(sscanf(comando, "kick %14[^\n]", username) != EOF)
+        if(strcmp(cmd, "kick") == 0){
+            if(sscanf(argum, "%29[^\n]", username) != EOF)
             //kickUser(username);
-            printf("O comando '%s' foi executado mas ainda não está implementado!\n", comando);
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
         }
-        if(strncmp(comando, "game", sizeof("game")) == 0){
+        if(strcmp(cmd, "game") == 0){
             //showGame();
-            printf("O comando '%s' foi executado mas ainda não está implementado!\n", comando);
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
         }
-        if(strncmp(comando, "shutdown", sizeof("shutdown")) == 0){
+        if(strcmp(cmd, "shutdown") == 0){
             //shutdown();
-            printf("O comando '%s' foi executado mas ainda não está implementado!\n", comando);
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
         }
-        if(strncmp(comando, "map", sizeof("map")) == 0){
+        if(strcmp(cmd, "map") == 0){
             //mudaMap();
-            printf("O comando '%s' foi executado mas ainda não está implementado!\n", comando);
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
         }
         //*comando = 0;
     }       
