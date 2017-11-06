@@ -6,13 +6,13 @@ int abreFich(){
     // Abrir ficheiro users para leitura e escrita e verifica se ele existe
     fo = open("users.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXO | S_IRWXG);
     if (fo == -1) {
-        printf("Erro ficheiro %s não existe!", "users.txt");
+        printf("ERRO!!!");
         return -1;
     }
     return fo;
 }
 
-
+void kickUser(char *user);
 
 void allUsers(){
     

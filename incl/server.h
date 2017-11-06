@@ -16,6 +16,7 @@
 
 typedef struct player{
     
+    char *nome;
     int vidas; // 3 vidas base
     int pontuacao;
     int bombas;
@@ -37,7 +38,23 @@ typedef struct tipoParede{
         
     int tipo_parede;  //0 -> vazio, 1 -> parede não destrutivel, 2 -> parede destrutivel -> 3 vazio c/ drop
     int explosao;
+
 }TParede;
+
+typedef struct info{
+
+    int tempo;
+    int items;
+    int npcs;
+
+}info;
+
+typedef struct infoJogador{
+
+    char *nomeJogador;
+    int pontuacaoJogador;
+    
+}infojogador;
 
 //--------------------------------------------------------------------------FUNÇÔES----------------------------------------------------------------------------
 
@@ -46,5 +63,5 @@ void allUsers();
 int verificaUser(char *user);
 char procuraUser(char *user);
 void addUSer(char *user, char *pass);
-
+void kickUSer(char *user);
 #endif

@@ -35,7 +35,7 @@ int main(){
         
         
         // adiciona jogador novo
-        if(strncmp(comando, "add", strlen("add")) == 0) {
+        if(strncmp(comando, "add", sizeof("add")) == 0) {
             sscanf(comando, "add %14[^ ] %14[^\n]", username, password);
             if(strlen(username) < 1 || strlen(password) < 1){
                 printf("Erro de sintaxe, porfavor escreva 'add USERNAME PASSWORD'!\n");
@@ -54,24 +54,41 @@ int main(){
             }                
         }
         // sai do servidor
-        if(strncmp(comando, "quit", strlen("quit")) == 0){
+        if(strncmp(comando, "quit", sizeof("quit")) == 0){
             exit(0);
         }
         // apago o ecrã
-        if(strncmp(comando, "clear", strlen("clear")) == 0){
+        if(strncmp(comando, "clear", sizeof("clear")) == 0){
             system("clear");
         }
         // mostra todos os jogadores registados e passwords(TODO mostrar só os nomes de utilizador)
-        if(strncmp(comando, "users", strlen("users")) == 0){
+        if(strncmp(comando, "users", sizeof("users")) == 0){
             allUsers();
         }
         // mostra jogador passado por argumento
-        if(strncmp(comando, "user", strlen("user")) == 0){
+        if(strncmp(comando, "user", sizeof("user")) == 0){
             if(sscanf(comando, "user %14[^\n]", username) != EOF)
                 procuraUser(username);
                 *username = 0;
         }
-
+        if(strncmp(comando, "kick", sizeof("kick")) == 0){
+            if(sscanf(comando, "kick %14[^\n]", username) != EOF)
+            //kickUser(username);
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", comando);
+        }
+        if(strncmp(comando, "game", sizeof("game")) == 0){
+            //showGame();
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", comando);
+        }
+        if(strncmp(comando, "shutdown", sizeof("shutdown")) == 0){
+            //shutdown();
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", comando);
+        }
+        if(strncmp(comando, "map", sizeof("map")) == 0){
+            //mudaMap();
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", comando);
+        }
+        //*comando = 0;
     }       
     return 0;
 }
