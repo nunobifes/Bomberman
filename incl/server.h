@@ -53,7 +53,7 @@ typedef struct infoJogador{
 
     char *nomeJogador;
     int pontuacaoJogador;
-    
+
 }infojogador;
 
 //--------------------------------------------------------------------------FUNÇÔES----------------------------------------------------------------------------
@@ -62,6 +62,6 @@ int abreFich();
 void allUsers();
 int verificaUser(char *user);
 char procuraUser(char *user);
-void addUSer(char *user, char *pass);
+void addUser(char *user, char *pass);
 void kickUSer(char *user);
 #endif

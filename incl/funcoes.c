@@ -81,7 +81,7 @@ char procuraUser(char *user){
     close(fich);
 }
 
-void addUSer(char *user, char *pass){
+void addUser(char *user, char *pass){
 
     int fich = abreFich();
     char userPass[50];
