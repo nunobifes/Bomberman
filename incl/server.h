@@ -16,9 +16,14 @@
 
 typedef struct player{
     
-    char *nome;
-    int vidas; // 3 vidas base
-    int pontuacao;
+    typedef struct infoPlayer{
+
+        char *nome;
+        int vidas; // 3 vidas base
+        int pontuacao;
+
+    }infoPlayer;
+    
     int bombas;
     int mbomba;
     int items; 
@@ -49,12 +54,6 @@ typedef struct info{
 
 }info;
 
-typedef struct infoJogador{
-
-    char *nomeJogador;
-    int pontuacaoJogador;
-
-}infojogador;
 
 //--------------------------------------------------------------------------FUNÇÔES----------------------------------------------------------------------------
 
