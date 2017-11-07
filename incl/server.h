@@ -16,33 +16,33 @@
 
 //--------------------------------------------------------------------------ESTRUTURAS-------------------------------------------------------------------------
 
-typedef struct login{
+typedef struct{
 
     char *username;
     char *password;
 
 }login;
 
-typedef struct player{
+
+typedef struct {
     
-    struct infoPlayer{
-
-        char *nome;
-        int vidas; // 3 vidas base
-        int pontuacao;
-
-    };
+    char *nome;
+    int vidas; // 3 vidas base
+    int pontuacao;
     
-    struct infoPlayer infoplayer;
+}infoPlayer;
 
-    int bombas;
+typedef struct{
+    
+    infoPlayer infoplayer;
+
     int mbomba;
     int items; 
     int x, y;
         
 }player;
     
-typedef struct npc{
+typedef struct{
     
     int hit;
     int drop;
@@ -50,14 +50,14 @@ typedef struct npc{
             
 }npc;
     
-typedef struct tipoParede{
+typedef struct{
         
     int tipo_parede;  //0 -> vazio, 1 -> parede não destrutivel, 2 -> parede destrutivel -> 3 vazio c/ drop
     int explosao;
 
 }TParede;
 
-typedef struct info{
+typedef struct{
 
     int tempo;
     int items;
@@ -67,6 +67,7 @@ typedef struct info{
 
 
 //--------------------------------------------------------------------------FUNÇÔES----------------------------------------------------------------------------
+
 
 void trataSinal(int s);
 int abreFich();
@@ -78,4 +79,6 @@ void kickUSer(char *user);
 void showGame();
 void shutdown();
 void mudaMap();
+void removeUser();
+
 #endif
