@@ -75,7 +75,7 @@ void allUsers();
 int verificaUser(char *user);
 char procuraUser(char *user);
 void addUser(char *user, char *pass);
-void kickUSer(char *user);
+void kickUser(char *user);
 void showGame();
 void shutdown();
 void mudaMap();

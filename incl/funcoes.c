@@ -57,7 +57,7 @@ int verificaUser(char *user){
     char userC[15], passC[15], line[50];
 
     while (1) {
-        if(fgets(line,150, fo) == NULL)
+        if(fgets(line,50, fo) == NULL)
             break;       
         sscanf(line, "%s %s\n", userC, passC);
         if(strcmp(userC, user) == 0){
@@ -77,7 +77,7 @@ char procuraUser(char *user){
     char userC[15], passC[15], line[50];
     static char ret[50];
     while (1) {
-        if(fgets(line,150, fo) == NULL)
+        if(fgets(line,50, fo) == NULL)
             break;       
         sscanf(line, "%s %s\n", userC, passC);
         if(strcmp(userC, user) == 0){
@@ -94,23 +94,20 @@ void removeUser(char *user){
     
     int fich = abreFich();
     FILE *fo = fdopen(fich, "r+");
-    int fd = open("users-temp.txt", O_RDWR | O_CREAT, S_IRWXU | S_IRWXO | S_IRWXG);
     char userC[15], passC[15], line[50], BUFFER[50]="";
-    static char ret[50];
+    //static char ret[50];
     while (1) {
         if(fgets(line,150, fo) == NULL)
             break;       
         sscanf(line, "%s %s\n", userC, passC);
             
         if(strcmp(userC, user) != 0){
-            sprintf(BUFFER, "%s %s\n", userC, passC);
-            close(fich);
+            sprintf(BUFFER + strlen(BUFFER), "%s %s\n", userC, passC);
         }
-        printf("%s", BUFFER);
-        //for(int i = 0; i != nUsers; i++){
-            //addUser(userC, passC);
-        //}
     }
+    remove("users.txt");
+    fich = abreFich();
+    write(fich, BUFFER, strlen(BUFFER));
     close(fich);
 }
 
@@ -125,6 +122,6 @@ void addUser(char *user, char *pass){
     
     if(ret != (off_t) -1)
         write(fich, userPass, strlen(userPass));
-        
+    
     close(fich);
 }

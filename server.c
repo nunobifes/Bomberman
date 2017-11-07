@@ -44,12 +44,12 @@ int main(){
         if(strcmp(cmd, "add") == 0) { // se cmd for igual a "add" continua
             sscanf(argum, "%14[^ ] %14[^\n]", username, password); // lê de argum uma string com um maximo de 14 bytes ate um espaço e escreve em username e lê uma string com um maximo de 14 bytes até um enter'\n' e escreve em password
             if(strlen(username) < 1 || strlen(password) < 1){  // compara se o tamanho de username ou de password for inferior a 1 devolve erro de sintaxe
-                perror("Erro de sintaxe, porfavor escreva 'add USERNAME PASSWORD'!\n");
+                printf("Erro de sintaxe, por favor escreva 'add USERNAME PASSWORD'!\n");
                 *username = 0; // dá clear ao username
                 *password = 0; // "" "" "" "" password
             }else{
                 if(verificaUser(username) == 1){ // chama a função verificaUser(username)(ver funcoes.c) e compara com 1 e se for devolve erro de username já a ser utilizado
-                    perror("Erro username já está a ser utilizado, porfavor escolhe outro!\n");
+                    printf("Erro username já está a ser utilizado, porfavor escolhe outro!\n");
                     *username = 0; // dá clear ao username
                     *password = 0; // "" "" "" "" password
                 }else{
@@ -75,8 +75,8 @@ int main(){
         // dá kick ao jogador user        
         }else if(strcmp(cmd, "kick") == 0){ // se cmd for igual a "kick" continua
             if(sscanf(argum, "%29[^\n]", username) != EOF) // vai se(ler de argumento uma string de tamanho maximo de 29 bytes até receber um enter'\n' e guarda em username) devolver diferente de EOF continua
-            //removeUser(username);
-            printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
+                //kickUser(username);
+                printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
         // mostra a informação sobre o jogo a decorrer
         }else if(strcmp(cmd, "game") == 0){ // se cmd for igual a "game" continua
             //showGame();
@@ -85,6 +85,13 @@ int main(){
         }else if(strcmp(cmd, "map") == 0){ // se cmd for igual a "map" continua
             //mudaMap();
             printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
+        }else if(strcmp(cmd, "help") == 0){ // se cmd for igual a "help" continua
+            printf("os comandos disponiveis são :\n add arg1 arg2\n shutdown\n clear\n users\n user arg1\n kick arg1\n game\n map\n help\n");
+        }else if(strcmp(cmd, "remove") == 0){ // se cmd for igual a "help" continua
+            if(sscanf(argum, "%29[^\n]", username) != EOF) // vai se(ler de argumento uma string de tamanho maximo de 29 bytes até receber um enter'\n' e guarda em username) devolver diferente de EOF continua
+                removeUser(username);
+        } else { 
+            printf("server: comando não encontrado: %s (Para ajuda execute 'help')\n", cmd);
         }
     }
     //clrtoeol();
