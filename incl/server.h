@@ -10,20 +10,31 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+//#include <termios.h>
+//#include <ncursesw/ncurses.h>
 //#include <sys/mman.h>
 
 //--------------------------------------------------------------------------ESTRUTURAS-------------------------------------------------------------------------
 
+typedef struct login{
+
+    char *username;
+    char *password;
+
+}login;
+
 typedef struct player{
     
-    typedef struct infoPlayer{
+    struct infoPlayer{
 
         char *nome;
         int vidas; // 3 vidas base
         int pontuacao;
 
-    }infoPlayer;
+    };
     
+    struct infoPlayer infoplayer;
+
     int bombas;
     int mbomba;
     int items; 
@@ -57,10 +68,14 @@ typedef struct info{
 
 //--------------------------------------------------------------------------FUNÇÔES----------------------------------------------------------------------------
 
+void trataSinal(int s);
 int abreFich();
 void allUsers();
 int verificaUser(char *user);
 char procuraUser(char *user);
 void addUser(char *user, char *pass);
 void kickUSer(char *user);
+void showGame();
+void shutdown();
+void mudaMap();
 #endif

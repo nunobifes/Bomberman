@@ -1,5 +1,9 @@
 #include "server.h"
 
+void trataSinal(int s){
+    if(s == SIGINT || s == SIGTSTP);
+}
+
 int abreFich(){
     
     int fo;
@@ -13,6 +17,9 @@ int abreFich(){
 }
 
 void kickUser(char *user);
+void showGame();
+void shutdown();
+void mudaMap();
 
 void allUsers(){
     

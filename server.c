@@ -1,6 +1,16 @@
 #include "incl/server.h"
 
+
 int main(){
+
+
+
+    signal(SIGINT, trataSinal);
+    signal(SIGTSTP, trataSinal);
+
+    //initscr();
+    //clear();
+    //raw();
 
     //player jogador;
     //jogador.vidas = 3;
@@ -14,17 +24,17 @@ int main(){
     // enemy.x= 20;
     // enemy.y= 30;
 
-    // TParede mapa[54][24];
+    // TParede mapa[54][24]; //forma 1 de criar o array de structs
 
-    // TParede** mapa;
-    // mapa = (TParede**)malloc(sizeof(TParede*) * 24);
-    // for(int i = 0; i<24; i++){
-    //    mapa[i] = (TParede*)malloc(sizeof(TParede)*54);
-    // }
-    
+    //forma 2 de criar o array de strcuts
+    /*TParede** mapa;
+    mapa = (TParede**)malloc(sizeof(TParede*) * 24);
+    for(int i = 0; i<24; i++){
+        mapa[i] = (TParede*)malloc(sizeof(TParede)*54);
+    }*/
     // a shell
 
-    system("clear");
+    //system("clear");
     char comando[50];
     char username[15], password[15], cmd[15], argum[30];
     
@@ -33,6 +43,7 @@ int main(){
         printf("bomberman@server $ ");
         scanf(" %49[^\n]", comando);
         sscanf(comando, "%14s %29[^\n]", cmd, argum);
+        //scanw(comando, "%14s %29[^\n]", cmd, argum);
         // adiciona jogador novo
         if(strcmp(cmd, "add") == 0) {
             sscanf(argum, "%14[^ ] %14[^\n]", username, password);
@@ -46,14 +57,14 @@ int main(){
                     *username = 0;
                     *password = 0;
                 }else{        
-                    addUser(username, password); //verificaUser(username, fo);
+                    addUser(username, password);
                     *username = 0;
                     *password = 0;
                 }
             }                
         }
         // sai do servidor
-        if(strcmp(cmd, "quit") == 0){
+        if(strcmp(cmd, "shutdown") == 0){
             exit(0);
         }
         // apago o ecrã
@@ -87,7 +98,10 @@ int main(){
             //mudaMap();
             printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
         }
-        //*comando = 0;
-    }       
+        
+    }
+    //clrtoeol();
+	//refresh();
+	//endwin();
     return 0;
 }
