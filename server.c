@@ -86,7 +86,7 @@ int main(){
             //mudaMap();
             printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
         }else if(strcmp(cmd, "help") == 0){ // se cmd for igual a "help" continua
-            printf("os comandos disponiveis são :\n add <username> <password>\n remove <username>\n users\n user <username>\n kick <username>\n shutdown\n clear\n game\n map\n help\n");
+            printf("os comandos disponiveis são:\n add <username> <password>\n remove <username>\n users\n user <username>\n kick <username>\n shutdown\n clear\n game\n map\n help\n");
         }else if(strcmp(cmd, "remove") == 0){ // se cmd for igual a "help" continua
             if(sscanf(argum, "%29[^\n]", username) != EOF) // vai se(ler de argumento uma string de tamanho maximo de 29 bytes até receber um enter'\n' e guarda em username) devolver diferente de EOF continua
                 removeUser(username);
