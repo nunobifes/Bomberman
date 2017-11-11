@@ -100,23 +100,34 @@ int main(){
             if(sscanf(argum, "%29[^\n]", username) != EOF) // vai se(ler de argumento uma string de tamanho maximo de 29 bytes até receber um enter'\n' e guarda em username) devolver diferente de EOF continua
                 if(strlen(username) < 1)
                     perror("Erro de sintaxe, por favor escreva 'user <username>'!\n");
-                else
-                    procuraUser(username); // chama a função procuraUSer(username) (ver funcoes.c) e devolve uma string com informação desse user
-                *username = 0; // dá clear ao username
-        
-        
+                else {
+                    if(verificaUser(username) == 0 ){ // chama a função verificaUser(username)(ver funcoes.c) e compara com 1 e se for devolve erro de username já a ser utilizado
+                        perror("Erro username não existe, use <users> para ver os utilizadores registados!\n");
+                        *username = 0; // dá clear ao username
+                    }else{
+                        procuraUser(username); // chama a função procuraUSer(username) (ver funcoes.c) e devolve uma string com informação desse user
+                        *username = 0; // dá clear ao username
+                    }
+                }
         // dá kick ao jogador user        
         }else if(strcmp(cmd, "kick") == 0){ // se cmd for igual a "kick" continua
             if(sscanf(argum, "%29[^\n]", username) != EOF){ // vai se(ler de argumento uma string de tamanho maximo de 29 bytes até receber um enter'\n' e guarda em username) devolver diferente de EOF continua
                 
                 if(strlen(username) < 1)
                     perror("Erro de sintaxe, por favor escreva 'kick <username>'!\n");
-                else
-                    //kickUser(username);
-                    printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
+                else {
+                    if(verificaUser(username) == 0 ){ // chama a função verificaUser(username)(ver funcoes.c) e compara com 1 e se for devolve erro de username já a ser utilizado
+                        perror("Erro username não existe, use <users> para ver os utilizadores registados!\n");
+                        *username = 0; // dá clear ao username
+                    }else{
+                        //kickUser(username);
+                        printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
+                        *username = 0; // dá clear ao username
+                    }
+        
+                }
             }
-        
-        
+    
         // mostra a informação sobre o jogo a decorrer
         }else if(strcmp(cmd, "game") == 0){ // se cmd for igual a "game" continua
             //showGame();
