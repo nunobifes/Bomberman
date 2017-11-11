@@ -1,4 +1,4 @@
-all: server
+all: server run clean
 
 server: server.o funcoes.o
 	gcc server.o funcoes.o -o server
@@ -10,7 +10,7 @@ funcoes.o: incl/funcoes.c
 	gcc -c incl/funcoes.c
 
 clean: server
-	rm *o server
+	rm *.o server
 
 run: server
 	./server

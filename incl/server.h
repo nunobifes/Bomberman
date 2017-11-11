@@ -18,24 +18,26 @@
 
 typedef struct{
 
-    char *username;
-    char *password;
+    char username[15];
+    char password[15];
 
 }login;
 
+typedef struct{
+    
+    char username[15];
+    char password[15];
+    int userID;
 
-typedef struct {
-    
-    char *nome;
-    int vidas; // 3 vidas base
-    int pontuacao;
-    
-}infoPlayer;
+
+}utilizador;
+
 
 typedef struct{
     
-    infoPlayer infoplayer;
-
+    char nome[15];
+    int vidas; // 3 vidas base
+    int pontuacao;
     int mbomba;
     int items; 
     int x, y;
@@ -44,7 +46,7 @@ typedef struct{
     
 typedef struct{
     
-    int hit;
+    int vivo;
     int drop;
     int x, y;
             
@@ -54,7 +56,8 @@ typedef struct{
         
     int tipo_parede;  //0 -> vazio, 1 -> parede não destrutivel, 2 -> parede destrutivel -> 3 vazio c/ drop
     int explosao;
-
+    int x, y;
+    
 }TParede;
 
 typedef struct{
@@ -68,9 +71,12 @@ typedef struct{
 
 //--------------------------------------------------------------------------FUNÇÔES----------------------------------------------------------------------------
 
+utilizador utilizadores[50];
+
 
 void trataSinal(int s);
-int abreFich();
+FILE * abreFich();
+void leficheiro();
 void allUsers();
 int verificaUser(char *user);
 char procuraUser(char *user);
@@ -80,5 +86,7 @@ void showGame();
 void shutdown();
 void mudaMap();
 void removeUser();
+void mostrauserstruct();
+void fechaFich();
 
 #endif
