@@ -272,8 +272,8 @@ void* leituraPipe(void *p){
     
     char buffer[50];
 
-    int erro_username = 0;
-    int erro_password = 0;
+    int erro_username = 2;
+    int erro_password = 2;
     int erro_existe = 0;
     char username[15], password[15];
     int pos = 0;
@@ -340,8 +340,8 @@ void* leituraPipe(void *p){
             }
         
             erro_existe = 0;
-            erro_username = 0;
-            erro_password = 0;
+            erro_username = 2;
+            erro_password = 2;
             lgin.tipo = 0;
             close(flc);
         }
