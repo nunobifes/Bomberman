@@ -1,5 +1,7 @@
 #include "server.h"
 #include "cliente.h"
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 //                        ______     ________    _______     __     __   ________    _______  
 //                       /      \   |        \  |       \   |  \   |  \ |        \  |       \ 
@@ -10,6 +12,7 @@
 //                      |  \__| $$  | $$_____   | $$  | $$     \$$ $$   | $$_____   | $$  | $$
 //                       \$$    $$  | $$     \  | $$  | $$      \$$$    | $$     \  | $$  | $$
 //                        \$$$$$$    \$$$$$$$$   \$$   \$$       \$      \$$$$$$$$   \$$   \$$
+
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------                                                             
 void trataSinal(int s){ // se receber o sinal SIGINT ou SIGTSTP a função trataSinal faz com que esses sinais não façam nada
@@ -272,13 +275,13 @@ void* leituraPipe(void *p){
     
     char buffer[50];
 
-    int erro_username = 2;
-    int erro_password = 2;
-    int erro_existe = 0;
+    int erro_username = 0;
+    int erro_password = 0;
+    
     char username[15], password[15];
     int pos = 0;
     while(1){    
-        
+        int erro_existe = 0;
         read(fd, &lgin, sizeof(lgin));
         
         if(lgin.tipo == 1){
@@ -292,6 +295,7 @@ void* leituraPipe(void *p){
             }
 
             int n;
+            int ohh;
             int j = 0;
             while (utilizadores[j].userID != 0)
                 j++;
@@ -299,39 +303,46 @@ void* leituraPipe(void *p){
             for(int i = 0; i < pi; i++){
                 if(strcmp(username, online[i].username) == 0){
                     msg.tipo = 0;
-                    strcpy(msg.aviso, "Utilizador já está online!");
+                    strcpy(msg.aviso, "\tUtilizador já está online!");
                     write(flc, &msg, sizeof(msg));
                     erro_existe = 1;
                 }
             }
-        
+            
             if(erro_existe == 0){
                 for(int i = 0; i < j; i++){
-                    if(strncmp(username, utilizadores[i].username, strlen(username)) != 0){
-                        msg.tipo = 0;
-                        strcpy(msg.aviso, "Username não existe!");
-                        write(flc, &msg, sizeof(msg));
+                    if(strncmp(username, utilizadores[i].username, strlen(utilizadores[i].username)) != 0){
+                        ohh = 1;
+                       
                     }else{
                         n = i;
-                        erro_username = 2;
+                        erro_username = 1;
                         break;
                     }
+                    
+                    
                 }
+                if(ohh == 1){
+                         msg.tipo = 0;
+                        strcpy(msg.aviso, "Username não existe!");
+                        sprintf(msg.aviso, "\tUsername '%s' não existe!", username);
+                        write(flc, &msg, sizeof(msg));
+                    }
             }
         
-            if(erro_username == 2){
-                if(strncmp(password, utilizadores[n].password, strlen(password)) != 0){
+            if(erro_username == 1){
+                if(strncmp(password, utilizadores[n].password, strlen(utilizadores[n].password)) != 0){
                     msg.tipo = 0;
-                    strcpy(msg.aviso, "Password errada!");
+                    strcpy(msg.aviso, "\tPassword errada!");
                     write(flc, &msg, sizeof(msg));
                 }else{
-                    erro_password = 2;
+                    erro_password = 1;
                 }
             }
         
-            if(erro_password == 2){
+            if(erro_password == 1){
                 msg.tipo = 1;
-                strcpy(msg.aviso, "Sucesso, login efectuado");
+                strcpy(msg.aviso, "\tSucesso, login efectuado!");
                 write(flc, &msg, sizeof(msg));
                 strcpy(online[pi].username, username);
                 strcpy(online[pi].password, password);
@@ -339,9 +350,8 @@ void* leituraPipe(void *p){
                 pi++;
             }
         
-            erro_existe = 0;
-            erro_username = 2;
-            erro_password = 2;
+            erro_username = 0;
+            erro_password = 0;
             lgin.tipo = 0;
             close(flc);
         }
@@ -361,6 +371,161 @@ void* leituraPipe(void *p){
     return NULL;
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+void shell(){
+    leficheiro();
+    system("clear");                                     // função de sistema para limpar  o ecrã
+    char comando[50];                                    // buffer para escrever o comando completo (cmd + argum)
+    char username[15], password[15], cmd[15], argum[30]; // strings para guardar o username, password, o comando(cmd) e os argumentos(argum)
+    while (1)
+    { // enquanto estiver a correr vai fazer ...
+
+        printf("bomberman@server $ ");                // imprime 'bomberman@server $ ' no ecrã
+        scanf(" %49[^\n]", comando);                  // lê o comando completo (cmd + argum)
+        sscanf(comando, "%14s %29[^\n]", cmd, argum); // lê de comando uma string com um maximo de 14 bytes(cmd) e uma string com um maximo de 29 bytes e espera por um enter'\n'(argum) no formato "%14s %29[^\n] e guarda cada um nas suas variaveis
+
+        // adiciona jogador novo
+        if (strcmp(cmd, "add") == 0)
+        {                                                          // se cmd for igual a "add" continua
+            sscanf(argum, "%14[^ ] %14[^\n]", username, password); // lê de argum uma string com um maximo de 14 bytes ate um espaço e escreve em username e lê uma string com um maximo de 14 bytes até um enter'\n' e escreve em password
+
+            if (strlen(username) < 1 || strlen(password) < 1)
+            { // compara se o tamanho de username ou de password for inferior a 1 devolve erro de sintaxe
+                perror("Erro de sintaxe, por favor escreva 'add <username> <password>'!\n");
+                *username = 0; // dá clear ao username
+                *password = 0; // "" "" "" "" password
+            }
+            else
+            {
+                if (strlen(username) > 13 || strlen(password) > 13)
+                {
+                    perror("Erro de sintaxe, <username> e <password> só podem ter no maximo 13 caracteres!\n");
+                    *username = 0; // dá clear ao username
+                    *password = 0; // "" "" "" "" password
+                }
+                else
+                {
+                    if (verificaUser(username) == 1)
+                    { // chama a função verificaUser(username)(ver funcoes.c) e compara com 1 e se for devolve erro de username já a ser utilizado
+                        perror("Erro username já está a ser utilizado, porfavor escolhe outro!\n");
+                        *username = 0; // dá clear ao username
+                        *password = 0; // "" "" "" "" password
+                    }
+                    else
+                    {
+                        addUser(username, password); // chama a função addUser(username, password) (ver funcoes.c) para adicionar o username e a password ao ficheiro
+                        *username = 0;               // dá clear ao username
+                        *password = 0;               // "" "" "" "" password
+                    }
+                }
+            }
+
+        // sai do servidor
+        }
+        else if (strcmp(cmd, "shutdown") == 0)
+        { // se cmd for igual a "shutdown" continua
+            sair();
+
+        // apago o ecrã
+        }
+        else if (strcmp(cmd, "clear") == 0)
+        {                    // se cmd for igual a "clear" continua
+            system("clear"); // limpa o ecrã
+
+            // mostra todos os jogadores registados
+        }
+        else if (strcmp(cmd, "users") == 0)
+        {               // se cmd for igual a "users" continua
+            allUsers(); // chama a função allUsers() (ver funcoes.c) e mostra o username de todos os users registados
+
+            // mostra jogador passado por argumento
+        }
+         else if (strcmp(cmd, "logados") == 0)
+        {               // se cmd for igual a "users" continua
+            mostraLogados(); // chama a função allUsers() (ver funcoes.c) e mostra o username de todos os users registados
+
+            // mostra jogador passado por argumento
+        }
+        else if (strcmp(cmd, "user") == 0)
+        {                                                   // se cmd for igual a "user" continua
+            if (sscanf(argum, "%29[^\n]", username) != EOF) // vai se(ler de argumento uma string de tamanho maximo de 29 bytes até receber um enter'\n' e guarda em username) devolver diferente de EOF continua
+                if (strlen(username) < 1)
+                    perror("Erro de sintaxe, por favor escreva 'user <username>'!\n");
+                else
+                {
+                    if (verificaUser(username) == 0)
+                    { // chama a função verificaUser(username)(ver funcoes.c) e compara com 1 e se for devolve erro de username já a ser utilizado
+                        perror("Erro username não existe, use <users> para ver os utilizadores registados!\n");
+                        *username = 0; // dá clear ao username
+                    }
+                    else
+                    {
+                        procuraUser(username); // chama a função procuraUSer(username) (ver funcoes.c) e devolve uma string com informação desse user
+                        *username = 0;         // dá clear ao username
+                    }
+                }
+            // dá kick ao jogador user
+        }
+        else if (strcmp(cmd, "kick") == 0)
+        { // se cmd for igual a "kick" continua
+            if (sscanf(argum, "%29[^\n]", username) != EOF)
+            { // vai se(ler de argumento uma string de tamanho maximo de 29 bytes até receber um enter'\n' e guarda em username) devolver diferente de EOF continua
+
+                if (strlen(username) < 1)
+                    perror("Erro de sintaxe, por favor escreva 'kick <username>'!\n");
+                else
+                {
+                    if (verificaUser(username) == 0)
+                    { // chama a função verificaUser(username)(ver funcoes.c) e compara com 1 e se for devolve erro de username já a ser utilizado
+                        perror("Erro username não existe, use <users> para ver os utilizadores registados!\n");
+                        *username = 0; // dá clear ao username
+                    }
+                    else
+                    {
+                        kickUser(username);
+                        kill(posx, SIGTSTP);
+                        //printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
+                        *username = 0; // dá clear ao username
+                    }
+                }
+            }
+
+            // mostra a informação sobre o jogo a decorrer
+        }
+        else if (strcmp(cmd, "game") == 0)
+        { // se cmd for igual a "game" continua
+            //showGame();
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
+
+            // muda o mapa do jogo para um escolhido por o user
+        }
+        else if (strcmp(cmd, "map") == 0)
+        { // se cmd for igual a "map" continua
+            //mudaMap();
+            printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
+        }
+        else if (strcmp(cmd, "help") == 0)
+        { // se cmd for igual a "help" continua
+            printf("os comandos disponiveis são:\n add <username> <password>\n remove <username>\n users\n user <username>\n logados\n kick <username>\n shutdown\n clear\n game\n map\n help\n");
+        }
+        else if (strcmp(cmd, "remove") == 0)
+        {                                                   // se cmd for igual a "help" continua
+            if (sscanf(argum, "%29[^\n]", username) != EOF) // vai se(ler de argumento uma string de tamanho maximo de 29 bytes até receber um enter'\n' e guarda em username) devolver diferente de EOF continua
+                if (strlen(username) < 1)
+                    perror("Erro de sintaxe, por favor escreva 'remove <username>'!\n");
+                else
+                {
+                    removeUser(username);
+                }
+        }
+        else
+        {
+            printf("server: comando não encontrado: %s (Para ajuda execute 'help')\n", cmd);
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 //                        ______     __          ______      ________    __    __    ________    ________ 
 //                       /      \   |  \        |      \    |        \  |  \  |  \  |        \  |        \
@@ -384,16 +549,19 @@ void *trataCliente(void *p){
     int n;
     while(1){
 
-        n = read(fcl, &msg, sizeof(msg));
-        if(n > 1){
+        read(fcl, &msg, sizeof(msg));
+        
             if(msg.tipo == 0){
-                printf("%s", msg.aviso);
+                //printf("%s", msg.aviso);
+                puts(msg.aviso);
+                msg.tipo = 2;
             }
 
             if(msg.tipo == 1){
                 breake = 0;
+                msg.tipo = 2;
             }
-        }
+       
         
     }
     close(fcl);
@@ -413,10 +581,10 @@ void sairCli(){
 void trataSinalCli(int s){
     
     if(s == SIGINT){
-        sair();
+        sairCli();
     }
     if(s == SIGUSR1){
-        sair();
+        sairCli();
     }
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------

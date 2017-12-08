@@ -3,6 +3,8 @@
 
 
 int main(){
+
+    
     breake = 1;
     char username[15], password[15];
 
@@ -28,9 +30,10 @@ int main(){
         perror("Erro na criação da thread");
 
     while(1){
-        system("clear");
+        
         lgin.tipo=0;
         sleep(1);
+        system("clear");
         if(breake == 0)
             break; 
         printf("Username: ");

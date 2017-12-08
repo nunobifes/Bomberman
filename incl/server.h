@@ -45,5 +45,6 @@ void fechaFich();
 void mostraLogados();
 void sair();
 void* leituraPipe(void *p);
+void shell();
 
 #endif
