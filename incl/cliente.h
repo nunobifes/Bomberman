@@ -1,5 +1,5 @@
-#ifndef SERVER
-#define SERVER
+#ifndef CLIENTE
+#define CLIENTE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,40 +10,23 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <ncursesw/ncurses.h>
 #include <pthread.h>
 
 //--------------------------------------------------------------------------ESTRUTURAS-------------------------------------------------------------------------
 #include "structs.h"
 
 //--------------------------------------------------------------------------VARIAVEIS----------------------------------------------------------------------------
-pid_t posx;
-pthread_t id;
-int pi;
-int keep_alive, n, fd, flc;
-char fifo_cliente[20];
 
 respCliente lgin;
-login* online;
+pthread_t id;
 mensagem msg;
-utilizador* utilizadores;
+int opcao;
+char fifo[50];
+int fd, fcl;
+int breake;
 //--------------------------------------------------------------------------FUNÇÔES----------------------------------------------------------------------------
-
-void trataSinal(int s);
-FILE *abreFich();
-void leficheiro();
-void allUsers();
-int verificaUser(char *user);
-char procuraUser(char *user);
-void addUser(char *user, char *pass);
-void kickUser(char *user);
-void showGame();
-void shutdown();
-void mudaMap();
-void removeUser();
-void mostrauserstruct();
-void fechaFich();
-void mostraLogados();
-void sair();
-void* leituraPipe(void *p);
-
+void *trataCliente(void *p);
+void trataSinalCli(int s);
+void sairCli();
 #endif
