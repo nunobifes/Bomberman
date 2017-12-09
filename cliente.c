@@ -9,7 +9,7 @@ int main(){
     char username[15], password[15];
 
     signal(SIGINT, trataSinalCli);
-    signal(SIGTSTP, trataSinalCli);
+    signal(SIGUSR1, trataSinalCli);
     fd = open("fifos/fifo_server", O_WRONLY);
     if (fd == -1){
         perror("Erro a abrir named pipe");

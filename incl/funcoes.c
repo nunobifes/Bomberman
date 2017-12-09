@@ -372,8 +372,6 @@ void* leituraPipe(void *p){
 }
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 void shell(){
-    leficheiro();
-    system("clear");                                     // função de sistema para limpar  o ecrã
     char comando[50];                                    // buffer para escrever o comando completo (cmd + argum)
     char username[15], password[15], cmd[15], argum[30]; // strings para guardar o username, password, o comando(cmd) e os argumentos(argum)
     while (1)
@@ -482,7 +480,7 @@ void shell(){
                     else
                     {
                         kickUser(username);
-                        kill(posx, SIGTSTP);
+                        kill(posx, SIGUSR1);
                         //printf("O comando '%s' foi executado mas ainda não está implementado!\n", cmd);
                         *username = 0; // dá clear ao username
                     }
@@ -554,14 +552,14 @@ void *trataCliente(void *p){
             if(msg.tipo == 0){
                 //printf("%s", msg.aviso);
                 puts(msg.aviso);
-                msg.tipo = 2;
+                
             }
 
             if(msg.tipo == 1){
                 breake = 0;
-                msg.tipo = 2;
+                
             }
-       
+        msg.tipo = 2;
         
     }
     close(fcl);

@@ -30,6 +30,10 @@ int main()
         mapa[i] = (TParede*)malloc(sizeof(TParede)*54);
     }*/
 
+
+    leficheiro();
+    system("clear");                                     // função de sistema para limpar  o ecrã
+   
     // a shell
     shell();
 
